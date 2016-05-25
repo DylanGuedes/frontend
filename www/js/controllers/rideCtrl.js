@@ -38,7 +38,7 @@ angular.module('starter.controllers')
 			$scope.rides.splice(rideIndex, 1);
 			$scope.message = "Carona " + ride.title + " foi removida com sucesso!";
 		}, function(erro){
-			console.log(erro.status);
+			console.error(erro.status);
 			$scope.message = "Não foi possivel remover a carona " + ride.title;
 		});
 	};
@@ -53,7 +53,7 @@ angular.module('starter.controllers')
       })
     .catch(function(data_error){
       $scope.message = data_error.message;
-      console.log($scope.message);
+      console.error($scope.message);
     });
 
   };

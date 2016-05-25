@@ -3,6 +3,7 @@
     <div class="list">
       <center>
         <label>
+          <br>
           <img src="img/others/logo_circ.png" width="250" height="250">
         </label>
         <h3>Partiu!</h3>
@@ -10,9 +11,10 @@
     </div> 
     <label ng-hide="isLogged()" class="item">
     <button class="item button button-block button-positive login" ng-click="fbLogin()">
-      Login com o facebook
+      Entrar com Facebook
     </button>
-    <p style="text-align: center;" ng-hide="isLogged()" ng-controller="menuCtrl">Você deve logar para usar a aplicação</p>
+    <p style="text-align: center;" ng-hide="isLogged()" ng-controller="menuCtrl">Para acessar a aplicacão você deve entrar</p>
+    <p style="text-align: center;" ng-hide="isLogged()" ng-controller="menuCtrl">com sua conta do Facebook</p>
     </label>
     <h5 style="text-align: center;"ng-show="isLogged()" ng-controller="menuCtrl">Bem vindo, {{user.name}}!</h5>
   </ion-content>
