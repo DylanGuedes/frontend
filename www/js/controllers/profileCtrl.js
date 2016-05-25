@@ -18,6 +18,7 @@ angular.module('starter.controllers')
     $state.go('menu.home');
   }
 
+
   /*Function to open in app an link*/
   $scope.inAppOpenLink = function(url) {
     var ref = cordova.InAppBrowser.open(url, '_system', 'location=yes');
