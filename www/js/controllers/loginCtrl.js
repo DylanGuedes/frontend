@@ -24,7 +24,7 @@ angular.module('starter.controllers')
             $state.go('menu.home');
         }
     }, {
-        remember: "default",
+        remember: "sessionOnly",
         scope: "email, public_profile, user_friends, user_about_me, publish_actions"
     });
   };
