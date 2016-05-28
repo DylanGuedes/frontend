@@ -1,6 +1,6 @@
 describe('rideCtrl tests', function() {
   describe('instantiation and scope tests', function() {
-    var $httpBackend, $rootScope, createController, authHandler;
+    var $httpBackend, $rootScope, createController, authHandler, rideStub;
     beforeEach(function() {
       module('starter');
       module('starter.controllers');
@@ -16,7 +16,7 @@ describe('rideCtrl tests', function() {
       };
     }));
 
-    it('should be defined and initializes', (function() {
+    it('should be defined and initialized', (function() {
       var controller = createController();
       expect(controller).toBeDefined();
       expect($rootScope).toBeDefined();
@@ -28,12 +28,30 @@ describe('rideCtrl tests', function() {
   });
 
   describe('requests to backend tests', function() {
-    var $httpBackend, $rootScope, createController, authHandler;
+    var $httpBackend, $rootScope, createController, userArray, userA, userB, mockResource,
+    rideStub, vehicleStub, usersJsonMock, ridesJsonMock;;
+
 
     beforeEach(function() {
       module('starter');
       module('starter.controllers');
       module('starter.services');
+    });
+
+    beforeEach(function() {
+      vehicleStub = {
+        "color": "blue",
+        "car_model": "my nice car",
+        "driver_id": "1"
+      };
+      rideStub = {
+        "title": "mytitle1",
+        "origin": "myniceorigin",
+        "destiny": "mynicedestiny",
+        "total_seats": "4",
+        "departure_time": "11h",
+        "user_id": "1"
+      };
     });
 
     beforeEach(inject(function($injector) {
@@ -44,39 +62,24 @@ describe('rideCtrl tests', function() {
       $httpBackend.when('GET', 'templates/menu.html').respond({ });
       $httpBackend.when('GET', 'templates/home.html').respond({ });
       $httpBackend.when('GET', 'templates/rideForm.html').respond({ });
-      $httpBackend.when('GET', 'http://104.236.252.208/api/users')
-        .respond([
-            {
-              "username": "teste1234",
-              "email": "nice@nice.com"
-            },
-            {
-              "username": "marukzubrker",
-              "email": "FACEBOOKISNICE@gmail.com"
-            }
-        ]);
-      $httpBackend.when('GET', 'http://104.236.252.208/api/users/1')
-        .respond([
-            {
-              "username": "teste1234",
-              "email": "nice@nice.com"
-            },
-            {
-              "username": "marukzubrker",
-              "email": "FACEBOOKISNICE@gmail.com"
-            }
-        ]);
+      $httpBackend.when('GET', 'templates/searchRide.html').respond({ });
+      $httpBackend.when('GET', 'templates/login.html').respond({ });
+      $httpBackend.when('GET', 'templates/rank.html').respond({ });
+      $httpBackend.when('GET', 'templates/profile.html').respond({ });
 
-      $httpBackend.when('GET', 'http://104.236.252.208/api/users/1/rides').respond([
-        {
-          'title': 'NICERIDE'
-        }
-      ]);
-      $httpBackend.when('GET', 'http://104.236.252.208/api/users/1/vehicles').respond([
-        {
-          'car_type': 'SEDANN'
-        }
-      ]);
+      usersJsonMock = readJSON('test/fixtures/users_fixture.json');
+      ridesJsonMock = readJSON('test/fixtures/rides_fixture.json');
+      userA = usersJsonMock.users[0];
+      userB = usersJsonMock.users[1];
+
+      userArray = usersJsonMock.users;
+
+      $httpBackend.when('GET', 'http://104.236.252.208/api/users').respond(usersJsonMock.users);
+      $httpBackend.when('GET', 'http://104.236.252.208/api/users/1').respond(usersJsonMock.users[1]);
+      $httpBackend.when('GET', 'http://104.236.252.208/api/users/1/rides').respond(ridesJsonMock.rides);
+      $httpBackend.when('GET', 'http://104.236.252.208/api/users/1/vehicles').respond([{'car_type': 'SEDANN'}]);
+      $httpBackend.when('DELETE', 'http://104.236.252.208/api/users/1/rides/1').respond(201, '');
+      $httpBackend.when('POST', 'http://104.236.252.208/api/users/1/rides').respond(201, ridesJsonMock.rides[0]);
       $rootScope = $injector.get('$rootScope');
       var $controller = $injector.get('$controller');
 
@@ -93,12 +96,7 @@ describe('rideCtrl tests', function() {
 
     it('should uses correct routes', inject(function($controller, _$location_) {
       $location = _$location_;
-      var scope = {};
-      var controller = $controller('rideCtrl', {
-        $scope: scope,
-        RegisterRide: null,
-        $http: null
-      });
+      var controller = createController();
 
       $location.path('/rides');
       expect($location.path()).toBe('/rides');
@@ -106,7 +104,31 @@ describe('rideCtrl tests', function() {
     }));
 
     it('should uses its factories', inject(function($controller) {
+      var controller = createController();
       $httpBackend.flush();
+      expect($rootScope.users.length).toEqual(2);
+      expect($rootScope.rides.length).toEqual(2);
+      expect($rootScope.vehicles.length).toEqual(1);
     }));
+
+    it('should increment rides length in case of addition', function() {
+      var controller = createController();
+      $httpBackend.flush();
+      expect($rootScope.rides.length).toEqual(2);
+      $rootScope.ride = rideStub;
+      $rootScope.vehicle = vehicleStub;
+      $rootScope.submitRide();
+      $httpBackend.flush();
+      expect($rootScope.rides.length).toEqual(3);
+    });
+
+    it('should decrement rides length in case of remove', function() {
+      var controller = createController();
+      $httpBackend.flush();
+      expect($rootScope.rides.length).toEqual(2);
+      $rootScope.remove(ridesJsonMock.rides[0]);
+      $httpBackend.flush();
+      expect($rootScope.rides.length).toEqual(1);
+    });
   });
 });
