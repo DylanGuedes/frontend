@@ -15,27 +15,14 @@ describe('menuCtrl tests', function() {
         return $controller('menuCtrl', {'$scope': $rootScope});
       };
     }));
-
-  /*
-
-  it('should be defined and initializes', (function() {
-      var controller = createController();
-      expect(controller).toBeDefined();
-      expect($rootScope).toBeDefined();
-      expect($rootScope.remove).toBeDefined();
-      expect($rootScope.rides).toBeDefined();
-      expect($rootScope.rides).toEqual([]);
-      expect($rootScope.message).toEqual('');
-    }));
-  */
-
+    
     it('should be defined and initializes', (function() {
       var controller = createController();
       expect(controller).toBeDefined();
       expect($rootScope).toBeDefined();       
 
-      }));
-
+    }));
+    /*
     describe('User is logged', function(){
 
       beforeEach(function() {               
@@ -45,13 +32,14 @@ describe('menuCtrl tests', function() {
       });
 
       it('should be logged', function(){
-
-        expect(expect(scope.user.token).toBeDefined()).toEqual(true);
-        expect(expect(scope.user.token).not.toBeDefined()).toEqual(false);
-
+        expect(expect(scope.user.token).toBeDefined()).toBeTruthy();
+        expect(expect(scope.user.token).not.toBeDefined()).toBeFalsy();
       });
 
-      describe('')
+      describe()
+   
+    
     });
+    */
   });
 });
