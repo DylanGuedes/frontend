@@ -38,15 +38,20 @@ describe('menuCtrl tests', function() {
 
     describe('User is logged', function(){
 
-      beforeEach(function() {
+      beforeEach(function() {               
         module('starter');
         module('starter.controllers');
         module('starter.services');
       });
 
       it('should be logged', function(){
-        expect(scope.isLogged()).toBeTruthy();
+
+        expect(expect(scope.user.token).toBeDefined()).toEqual(true);
+        expect(expect(scope.user.token).not.toBeDefined()).toEqual(false);
+
       });
+
+      describe('')
     });
   });
 });
