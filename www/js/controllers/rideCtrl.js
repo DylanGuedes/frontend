@@ -60,7 +60,6 @@ angular.module('starter.controllers')
   }
 
   $scope.updateRide = function() {
-    console.log("asdf");
     RideAPI.userRides.update({userId: Profile.getUser().backendId, rideId: $scope.ride.id}, {ride: $scope.ride, vehicle: $scope.vehicle}).$promise
     .then(function(response) {
       console.log("Carona " + $scope.ride.title + " atualizada com sucesso");
