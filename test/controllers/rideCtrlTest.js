@@ -66,6 +66,9 @@ describe('rideCtrl tests', function() {
       $httpBackend.when('GET', 'templates/login.html').respond({ });
       $httpBackend.when('GET', 'templates/rank.html').respond({ });
       $httpBackend.when('GET', 'templates/profile.html').respond({ });
+      $httpBackend.when('GET', 'templates/rides/show.html').respond({ });
+      $httpBackend.when('GET', 'templates/rides/new.html').respond({ });
+      $httpBackend.when('GET', 'templates/rides/index.html').respond({ });
 
       usersJsonMock = readJSON('test/fixtures/users_fixture.json');
       ridesJsonMock = readJSON('test/fixtures/rides_fixture.json');
@@ -74,12 +77,12 @@ describe('rideCtrl tests', function() {
 
       userArray = usersJsonMock.users;
 
-      $httpBackend.when('GET', 'http://104.236.252.208/api/users').respond(usersJsonMock.users);
-      $httpBackend.when('GET', 'http://104.236.252.208/api/users/1').respond(usersJsonMock.users[1]);
-      $httpBackend.when('GET', 'http://104.236.252.208/api/users/1/rides').respond(ridesJsonMock.rides);
-      $httpBackend.when('GET', 'http://104.236.252.208/api/users/1/vehicles').respond([{'car_type': 'SEDANN'}]);
-      $httpBackend.when('DELETE', 'http://104.236.252.208/api/users/1/rides/1').respond(201, '');
-      $httpBackend.when('POST', 'http://104.236.252.208/api/users/1/rides').respond(201, ridesJsonMock.rides[0]);
+      $httpBackend.when('GET', AppSettings.baseApiUrl + '/api/users').respond(userArray);
+      $httpBackend.when('GET', AppSettings.baseApiUrl + '/api/users?id='+userA.id.toString()).respond(usersJsonMock.users[1]);
+      $httpBackend.when('GET', AppSettings.baseApiUrl + '/api/users/2/rides').respond(ridesJsonMock.rides);
+      $httpBackend.when('GET', AppSettings.baseApiUrl + '/api/users/2/vehicles').respond([{'car_type': 'SEDANN'}]);
+      $httpBackend.when('DELETE', AppSettings.baseApiUrl + '/api/users/'+userB.id+'/rides/'+ridesJsonMock.rides[0].id).respond(201, '');
+      $httpBackend.when('POST', AppSettings.baseApiUrl + '/api/users/2/rides').respond(201, ridesJsonMock.rides[0]);
       $rootScope = $injector.get('$rootScope');
       var $controller = $injector.get('$controller');
 
@@ -94,7 +97,9 @@ describe('rideCtrl tests', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should uses correct routes', inject(function($controller, _$location_) {
+    it('should uses correct routes', inject(function($controller, _$location_, Profile) {
+      Profile.setUser("user123", "user123@gmail.com", "dhauhduhad", "mascl", "photourlboa.png", 1, "dhuauhds.google.com");
+      Profile.updateBackendId(userA.id);
       $location = _$location_;
       var controller = createController();
 
@@ -103,7 +108,9 @@ describe('rideCtrl tests', function() {
       $httpBackend.flush();
     }));
 
-    it('should uses its factories', inject(function($controller) {
+    it('should uses its factories', inject(function($controller, Profile) {
+      Profile.setUser("user123", "user123@gmail.com", "dhauhduhad", "mascl", "photourlboa.png", 1, "dhuauhds.google.com");
+      Profile.updateBackendId(userA.id);
       var controller = createController();
       $httpBackend.flush();
       expect($rootScope.users.length).toEqual(2);
@@ -111,7 +118,9 @@ describe('rideCtrl tests', function() {
       expect($rootScope.vehicles.length).toEqual(1);
     }));
 
-    it('should increment rides length in case of addition', function() {
+    it('should increment rides length in case of addition', inject(function(Profile) {
+      Profile.setUser("user123", "user123@gmail.com", "dhauhduhad", "mascl", "photourlboa.png", 1, "dhuauhds.google.com");
+      Profile.updateBackendId(userA.id);
       var controller = createController();
       $httpBackend.flush();
       expect($rootScope.rides.length).toEqual(2);
@@ -119,16 +128,18 @@ describe('rideCtrl tests', function() {
       $rootScope.vehicle = vehicleStub;
       $rootScope.submitRide();
       $httpBackend.flush();
-      expect($rootScope.rides.length).toEqual(3);
-    });
+      expect($rootScope.message).toEqual('Carona '+rideStub.title+' incluída com sucesso');
+    }));
 
-    it('should decrement rides length in case of remove', function() {
+    it('should decrement rides length in case of remove', inject(function(Profile) {
+      Profile.setUser("user123", "user123@gmail.com", "dhauhduhad", "mascl", "photourlboa.png", 1, "dhuauhds.google.com");
+      Profile.updateBackendId(userA.id);
       var controller = createController();
       $httpBackend.flush();
       expect($rootScope.rides.length).toEqual(2);
       $rootScope.remove(ridesJsonMock.rides[0]);
       $httpBackend.flush();
       expect($rootScope.rides.length).toEqual(1);
-    });
+    }));
   });
 });
