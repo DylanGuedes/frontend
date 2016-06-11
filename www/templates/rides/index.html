@@ -5,7 +5,7 @@
         <ion-content class="padding">
           <form>
             <h2 class="title">Pesquisar</h2>
-            <input ng-model="filterRide.destiny" placeholder="Pesquisar por Destino" type="search" >
+            <input ng-model="filterRide.destination" placeholder="Pesquisar por Destino" type="search" >
           </form>
           <ion-list  ng-repeat="user in users">
             <div class="list card" ng-repeat="ride in user.driver.rides  | filter: filterRide : strict">
@@ -16,7 +16,7 @@
                 <div class="total_seats item-right">Vagas: {{ride.total_seats}}</div>
 
                       <div class="driver">Motorista: {{user.name}}</div>
-                      <div class="attributes">Destino: {{ride.destiny}}</div>
+                      <div class="attributes">Destino: {{ride.destination}}</div>
                       <div class="attributes">Origem: {{ride.origin}}</div>
                       <div class="attributes">Hora de ida: {{ride.departure_time}}</div>
 

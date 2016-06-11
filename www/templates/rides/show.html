@@ -3,8 +3,8 @@
     <div class="card">
       <div class="item item-text-wrap">
         <div class="row">
-          <a ng-href="https://www.facebook.com/{{user.facebook_id}}" class="item-thumbnail-left driver_avatar" target="_blank">
-            <img class="img" ng-src ="{{user.photo_url}}" alt="Cover Image" width="50px;" height="50px;">
+          <a ng-href="https://www.facebook.com/{{user_driver.facebook_id}}" class="item-thumbnail-left driver_avatar" target="_blank">
+            <img class="img" ng-src ="{{user_driver.photo_url}}" alt="Cover Image" width="50px;" height="50px;">
           </a>
           <div class="col" ng-repeat="img in imgs">
             <a class="item item-avatar passenger_avatar" href="#">
@@ -50,7 +50,7 @@
            <p class="item item-icon-left">
              <i class="icon ion-model-s"></i>
              <strong>Veículo:</strong>
-             {{vehicle.car_model}}, {{vehicle.color}}
+             {{vehicle_ride.car_model}}, {{vehicle_ride.color}}
            </p>
 
            <p class="item item-icon-left">
@@ -73,26 +73,24 @@
         </div>
       </div>
       <div class="row">
-        <button class="button button-full button-positive button-outside" ng-show="ride.driver.id == user.driver.id" ui-sref="menu.editRide({id: ride.id})">
+        <button class="button button-full button-positive button-outside" ng-show="showEditRide" ui-sref="menu.editRide({id: ride.id})">
           Editar
+        </button>
+      </div>
+      <div class="row">
+        <button class="button button-full button-positive button-outside" ng-show="showEnterButton" ng-click="enterRide()">
+          Entrar na carona
+        </button>
+      </div>
+      <div class="row">
+        <button class="button button-full button-positive button-outside" ng-show="showExitButton" ng-click="exitRide()">
+          Sair na carona
         </button>
       </div>
       <div class="row">
         <button class="button button-block button-assertive" ui-sref="menu.rides">
           Voltar
         </button>
-      </div>
-      <div class="row">
-        <label class="col">
-          <button class="button button-full button-positive button-outside" ng-hide="ride.driver.id == user.driver.id || ride.total_seats == 0" ng-click="enterRide()">
-            Entrar na carona
-          </button>
-        </label>
-        <label class="col">
-          <button class="button button-full button-positive button-outside" ng-hide="ride.driver.id == user.driver.id || ride.total" ng-click="exitRide()">
-            Sair na carona
-          </button>
-        </label>
       </div>
   </ion-content>
 </ion-view>
