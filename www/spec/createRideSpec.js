@@ -1,7 +1,7 @@
 describe('create rides', function() {
   it('should create valid rides', function() {
     browser.get('http://localhost:8100');
-    var fbButton = element(by.buttonText("Login com o facebook"));
+    var fbButton = element(by.buttonText("Login com o Facebook"));
     fbButton.click();
     browser.getAllWindowHandles().then(function(handles) {
       browser.switchTo().window(handles[1]);
@@ -15,7 +15,7 @@ describe('create rides', function() {
       loginSubmitButton.click();
       // sleep to wait for facebook and firebase response
       browser.driver.sleep(20000);
-      browser.switchTo().window(handles[0]); 
+      browser.switchTo().window(handles[0]);
     });
     var openMenuButton = element(by.css('.nav-bar-block[nav-bar=active]'));
     expect(openMenuButton).toBeDefined();

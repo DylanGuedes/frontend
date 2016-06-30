@@ -1,7 +1,7 @@
 describe('facebook login', function() {
   it('should show welcome page', function() {
     browser.get('http://localhost:8100');
-    var fbButton = element(by.buttonText("Login com o facebook"));
+    var fbButton = element(by.buttonText("Login com o Facebook"));
     fbButton.click();
     browser.getAllWindowHandles().then(function(handles) {
       browser.switchTo().window(handles[1]);
